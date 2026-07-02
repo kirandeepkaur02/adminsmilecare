@@ -316,7 +316,7 @@ useEffect(() => {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-muted/50">
-              <tr className="text-left text-xs uppercase tracking-wider text-muted-foreground">
+              <tr className="text-left text-xs uppercase tracking-wider text-gray-500">
                 <th className="px-5 py-3 font-medium">Member</th>
                 <th className="px-5 py-3 font-medium">Position</th>
                 <th className="px-5 py-3 font-medium">Phone</th>
@@ -326,7 +326,7 @@ useEffect(() => {
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-border border-gray-200">
+            <tbody className="divide-y divide-gray-200  ">
               {items.length > 0 ? (
                 items.map((staff) => (
                   <tr key={staff.id} className="hover:bg-muted/30 transition">
@@ -353,7 +353,7 @@ useEffect(() => {
                       <div className="flex justify-end gap-2">
                         <button
                           onClick={() => openEdit(staff)}
-                          className="p-2 border rounded hover:bg-gray-100"
+                          className="p-2 border border-gray-200  shadow-sm  rounded hover:bg-gray-100"
                         >
                           <Pencil className="h-4 w-4" />
                         </button>
