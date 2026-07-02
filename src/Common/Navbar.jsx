@@ -9,6 +9,7 @@ const Navbar = ( { onMenu }) => {
 
  const location = useLocation();
   const pathname = location.pathname;
+console.log(pathname);
 
   const [dark, setDark] = useState(false);
 const [showDropdown, setShowDropdown] = useState(false);
@@ -32,7 +33,7 @@ const labels = {
 
   const title = labels[pathname] || "Admin";
   
-
+console.log(title);
 
 
   return (
@@ -48,10 +49,10 @@ const labels = {
         </button>
 
         {/* Page Title */}
-        <div className="hidden md:block">
+        <div className=" ">
          
-          <h1 className="text-3xl font-semibold text-foreground">
-            {title}
+          <h1 className="text-3xl font-semibold text-black">
+            {title} 
           </h1>
         </div>
 
