@@ -19,8 +19,7 @@ const Doctors = () => {
 
   const [doctors, setDoctors] = useState([]);
 
-
-  const [formData, setFormData] = useState({
+const emptyForm = {
   id: "",
   name: "",
   specialization: "",
@@ -31,15 +30,39 @@ const Doctors = () => {
   available_days: "",
   consultation_time: "",
   description: "",
-});
+};
+  const [formData, setFormData] = useState(emptyForm);
 
 const [showEdit, setShowEdit] = useState(false);
+const [isEdit, setIsEdit] = useState(false);
+
+ 
 
 const handleChange = (e) => {
   setFormData({
     ...formData,
     [e.target.name]: e.target.value,
   });
+};
+
+const addDoctor = () => {
+  fetch("http://localhost/adminsmilecare/doctors/adddoctors.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      alert(data.message);
+
+      if (data.status) {
+        setShowEdit(false);
+        setFormData(emptyForm);
+        fetchDoctors();
+      }
+    });
 };
 
   const fetchDoctors = () => {
@@ -146,7 +169,11 @@ const updateDoctor = () => {
         </div>
 
         <button
-
+             onClick={() => {
+    setFormData(emptyForm);
+    setIsEdit(false);
+    setShowEdit(true);
+  }}
           className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
         >
           <Plus size={18} />
@@ -251,7 +278,7 @@ const updateDoctor = () => {
 
                     <button
                      onClick={()=> {
-                        setShowEdit(true);
+                        setIsEdit(true);
                         editDoctor(doctor.id)
                      }
                       
@@ -290,7 +317,7 @@ const updateDoctor = () => {
     <div className="bg-white rounded-lg w-175 p-6">
 
       <div className="flex justify-between items-center mb-5">
-        <h2 className="text-xl font-bold">Edit Doctor</h2>
+        <h2 className="text-xl font-bold"> {isEdit ? "Edit Doctor" : "Add Doctor"}</h2>
 
         <button onClick={() => setShowEdit(false)}>
           <X size={22} />
@@ -392,10 +419,10 @@ const updateDoctor = () => {
         </button>
 
         <button
-          onClick={updateDoctor}
+         onClick={isEdit ? updateDoctor : addDoctor}
           className="px-4 py-2 bg-blue-600 text-white rounded"
         >
-          Save
+         {isEdit ? "Update" : "Save"}
         </button>
 
       </div>
