@@ -11,11 +11,10 @@ import Services from './components/Services.jsx'
 import Testimonials from './components/Testimonials.jsx'
 import Blogs from './components/Blogs.jsx'
 import Settings from './components/Settings.jsx'
-
+import ViewService from './components/ViewService.jsx'
 
 function App() {
  
-
   return (
   
      <Routes>
@@ -28,12 +27,10 @@ function App() {
       <Route path="/testimonials" element={<Testimonials />} />
       <Route path="/blogs" element={<Blogs />} />
       <Route path="/settings" element={<Settings />} />
+      <Route path="/view-service/:id" element={<ViewService />} />
      </Route>
      </Routes>
-
-      
-    
-  )
+)
 }
 
 export default App
