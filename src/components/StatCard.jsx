@@ -19,6 +19,7 @@ const StatCard = ({
   tone = "primary",
   trend,
   index = 0,
+   onClick,
 }) => {
   return (
     <motion.div
@@ -28,6 +29,7 @@ const StatCard = ({
         duration: 0.35,
         delay: index * 0.05,
       }}
+       onClick={onClick}
       className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-5 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
     >
       {/* Background Circle */}

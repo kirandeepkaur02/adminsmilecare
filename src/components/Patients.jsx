@@ -7,6 +7,8 @@ import { Pencil, Trash2 } from "lucide-react";
 
 const Patients = () => {
 
+const [isEdit, setIsEdit] = useState(false);
+
   const [patients, setPatients] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const emptyPatient = {
@@ -77,11 +79,9 @@ const Patients = () => {
       if (result.status) {
         alert("Patient Added Successfully");
 
-        // Close modal
-        setShowForm(false);
-
-        // Clear form
-        setFormData(emptyPatient);
+setIsEdit(false);          // <-- Add here
+  setShowForm(false);
+  setFormData(emptyPatient);
 
         // Reload patient list
         const res = await fetch(
@@ -159,11 +159,10 @@ const Patients = () => {
           )
         );
 
-        // Close modal
-        setShowForm(false);
-
-        // Clear form
-        setFormData(emptyPatient);
+       
+  setIsEdit(false);        // <-- Add here
+  setShowForm(false);
+  setFormData(emptyPatient);
       } else {
         alert(result.message);
       }
@@ -192,7 +191,11 @@ const Patients = () => {
         </div>
 
         <button
-          onClick={() => { setShowForm(true); setFormData(emptyPatient) }}
+          onClick={() => {
+    setFormData(emptyPatient);
+    setIsEdit(false);
+    setShowForm(true);
+  }}
           className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
         >
           <Plus size={18} />
@@ -210,7 +213,7 @@ const Patients = () => {
             {/* Header */}
             <div className=" px-6 py-4">
               <h2 className="text-xl font-semibold">
-                Add Patient
+                {isEdit ? "Edit Patient Details" : "Add Patient"}
               </h2>
 
               <button
@@ -331,7 +334,7 @@ const Patients = () => {
 
               <button
                 type="button"
-                onClick={handleSave}
+               onClick={isEdit ? handleUpdate : handleSave}
                 className="rounded-lg shadow-sm bg-blue-400 px-5 py-2 text-white "
               >
                 Save
@@ -419,9 +422,10 @@ const Patients = () => {
                       <div className="flex justify-end gap-2">
                         <button
                           onClick={() => {
-                            setFormData(patient);
-                            setShowForm(true);
-                          }}
+    setFormData(patient);
+    setIsEdit(true);
+    setShowForm(true);
+  }}
                           className="rounded border border-gray-200 shadow-sm   p-2 hover:bg-gray-100"
                         >
                           <Pencil size={16} />
