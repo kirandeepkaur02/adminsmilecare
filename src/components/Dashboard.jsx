@@ -13,12 +13,20 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import StatCard from "./StatCard";
-
+import {
+  ResponsiveContainer,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Bar,
+} from "recharts";
 
 const Dashboard = () => {
 
 
-
+const [monthlyBookings, setMonthlyBookings] = useState([]);
   const [dashboardData, setDashboardData] = useState({
   doctors: 0,
   staff: 0,
@@ -41,6 +49,15 @@ const Dashboard = () => {
     .catch((err) => console.log(err));
 }, []);
 
+
+ useEffect(() => {
+    fetch("http://localhost/adminsmilecare/dashboard/getMonthlyBookings.php")
+      .then((res) => res.json())
+      .then((data) => {
+        setMonthlyBookings(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
 
 
@@ -175,8 +192,65 @@ const Dashboard = () => {
       />
 
     </div>
+
+ <div className="rounded-2xl   mt-10  border border-gray-200 bg-white p-5 shadow-lg">
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <h3 className="text-lg font-semibold">
+            Monthly Bookings
+          </h3>
+          <p className="text-sm text-gray-500">
+            Bookings overview for this year
+          </p>
+        </div>
+
+        <span className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-600">
+          {new Date().getFullYear()}
+        </span>
+      </div>
+
+      <div className="h-72">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={monthlyBookings}>
+            <defs>
+              <linearGradient id="barFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#2563EB" stopOpacity={0.95} />
+                <stop offset="100%" stopColor="#0EA5A4" stopOpacity={0.7} />
+              </linearGradient>
+            </defs>
+
+            <CartesianGrid
+              strokeDasharray="3 3"
+              vertical={false}
+            />
+
+            <XAxis dataKey="month" />
+
+            <YAxis />
+
+            <Tooltip />
+
+            <Bar
+              dataKey="bookings"
+              fill="url(#barFill)"
+              radius={[8, 8, 0, 0]}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+
+
+
+
     </div>
     
+
+
+
+
+
+
   )
 }
 
