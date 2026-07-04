@@ -14,15 +14,25 @@ const Booking = () => {
   const [status, setStatus] = useState("All");
 
   const [items, setItems] = useState([]);
-  useEffect(() => {
-    fetch("http://localhost/adminsmilecare/bookings/getbooking.php")
-      .then((res) => res.json())
-      .then((data) => {
-        setItems(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
+
+
+  const fetchBookings = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost/adminsmilecare/bookings/getbooking.php"
+    );
+
+    const data = await response.json();
+    setItems(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+useEffect(() => {
+  fetchBookings();
+}, []);
 
   // const removeBooking = async()=>{
   // console.log("removeBooking function called");
@@ -61,7 +71,44 @@ const removeBooking = async (id) => {
   }
 };
 
+const updateBookingStatus = async (id, status) => {
+  try {
+    const response = await fetch(
+      "http://localhost/adminsmilecare/bookings/updatebookingstatus.php",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+          status,
+        }),
+      }
+    );
 
+    const result = await response.json();
+
+    if (result.success) {
+      alert(result.message);
+
+      // Refresh bookings
+      fetchBookings();
+
+      // OR update state without API call
+      // setBookings(prev =>
+      //   prev.map(item =>
+      //     item.id === id ? { ...item, status } : item
+      //   )
+      // );
+
+    } else {
+      alert(result.message);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   return (
     <div className="p-6">
@@ -166,15 +213,16 @@ const removeBooking = async (id) => {
                     {/* Status */}
                     <td className="px-4 py-3">
                       <span
-                        className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium border
-            ${booking.status === "Confirmed"
-                            ? "bg-blue-50 text-blue-600 border-blue-200"
-                            : booking.status === "Completed"
-                              ? "bg-green-50 text-green-600 border-green-200"
-                              : booking.status === "Cancel"
-                                ? "bg-red-50 text-red-600 border-red-200"
-                                : "bg-yellow-50 text-yellow-600 border-yellow-200"
-                          }`}
+                       className={`inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium border
+${
+  booking.status === "Confirmed"
+    ? "bg-blue-50 text-blue-600 border-blue-200"
+    : booking.status === "Completed"
+    ? "bg-green-50 text-green-600 border-green-200"
+    : booking.status === "Cancelled"
+    ? "bg-red-50 text-red-600 border-red-200"
+    : "bg-yellow-50 text-yellow-600 border-yellow-200"
+}`}
                       >
                         <span className="w-2 h-2 rounded-full bg-current"></span>
                         {booking.status}
@@ -186,18 +234,21 @@ const removeBooking = async (id) => {
                       <div className="flex items-center gap-3">
 
                         <button
+                          onClick={() => updateBookingStatus(booking.id,"Confirmed")}
                           className="w-10 h-10 rounded-2xl border  border-gray-200 shadow-sm flex items-center justify-center hover:bg-blue-50"
                         >
                           <Check className="w-5 h-5 text-blue-600" />
                         </button>
 
                         <button
+                          onClick={() => updateBookingStatus(booking.id, "Completed")}
                           className="w-10 h-10 rounded-2xl border border-gray-200  shadow-sm flex items-center justify-center hover:bg-green-50"
                         >
                           <CheckCircle2 className="w-5 h-5 text-green-600" />
                         </button>
 
                         <button
+                           onClick={() => updateBookingStatus(booking.id, "Cancelled")}
                           className="w-10 h-10 rounded-2xl border border-gray-200 shadow-sm flex items-center justify-center hover:bg-yellow-50"
                         >
                           <X className="w-5 h-5 text-orange-500" />

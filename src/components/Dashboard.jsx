@@ -254,7 +254,7 @@ const StatusBadgeAppointment = ({ status }) => {
                 Welcome back to SmileCare
               </h2>
 
-              <p className="mt-2 max-w-xl text-sm text-white/90">
+              {/* <p className="mt-2 max-w-xl text-sm text-white/90">
                 You have{" "}
                 <span className="font-semibold">
                   {dashboardData.bookings}
@@ -264,7 +264,7 @@ const StatusBadgeAppointment = ({ status }) => {
                   {dashboardData.todayBookings}
                 </span>{" "}
                 appointments today.
-              </p>
+              </p> */}
             </div>
 
             {/* Right Side */}

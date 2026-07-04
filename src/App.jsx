@@ -14,7 +14,7 @@ import Settings from './components/Settings.jsx'
 import ViewService from './components/ViewService.jsx'
 import EditService from './components/EditService.jsx'
 import AddService from './components/AddService.jsx'
-
+import ViewDoctor from "./components/ViewDoctor";
 
 
 function App() {
@@ -35,6 +35,7 @@ function App() {
       <Route path="/view-service/:id" element={<ViewService />} />
       <Route path="/edit-service/:id" element={<EditService />} />
       <Route path="/addService" element={<AddService />} />
+       <Route path="/doctors/view/:id" element={<ViewDoctor />} />
      </Route>
      </Routes>
 )
