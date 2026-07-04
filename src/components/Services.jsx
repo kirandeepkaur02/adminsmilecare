@@ -90,7 +90,9 @@ const Services = () => {
           </p>
         </div>
 
-        <button className="bg-sky-500 text-white px-5 py-2 rounded-lg flex items-center gap-2">
+        <button
+          onClick={()=> navigate("/addService")}
+        className="bg-sky-500 text-white px-5 py-2 rounded-lg flex items-center gap-2">
           <Plus size={18} />
           Add Service
         </button>

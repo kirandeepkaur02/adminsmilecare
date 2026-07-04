@@ -47,12 +47,6 @@ const Patients = () => {
 
 
 
-  // const handleSave = async () => {
-
-  //   console.log(formData);
-
-  // };
-
   const handleSave = async () => {
     if (
       formData.name.trim() === "" ||

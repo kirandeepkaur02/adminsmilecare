@@ -13,12 +13,17 @@ import Blogs from './components/Blogs.jsx'
 import Settings from './components/Settings.jsx'
 import ViewService from './components/ViewService.jsx'
 import EditService from './components/EditService.jsx'
+import AddService from './components/AddService.jsx'
+
+
+
 function App() {
  
   return (
   
      <Routes>
       <Route path="/" element={<Admin />} > 
+      <Route path="/" element={<Dashboard />} />
       <Route path="/doctors" element={<Doctors />} />
       <Route path="/staff" element={<Staff />} />
       <Route path="/patients" element={<Patients />} />
@@ -29,6 +34,7 @@ function App() {
       <Route path="/settings" element={<Settings />} />
       <Route path="/view-service/:id" element={<ViewService />} />
       <Route path="/edit-service/:id" element={<EditService />} />
+      <Route path="/addService" element={<AddService />} />
      </Route>
      </Routes>
 )
