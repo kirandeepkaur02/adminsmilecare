@@ -12,7 +12,7 @@ import Testimonials from './components/Testimonials.jsx'
 import Blogs from './components/Blogs.jsx'
 import Settings from './components/Settings.jsx'
 import ViewService from './components/ViewService.jsx'
-
+import EditService from './components/EditService.jsx'
 function App() {
  
   return (
@@ -28,6 +28,7 @@ function App() {
       <Route path="/blogs" element={<Blogs />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/view-service/:id" element={<ViewService />} />
+      <Route path="/edit-service/:id" element={<EditService />} />
      </Route>
      </Routes>
 )

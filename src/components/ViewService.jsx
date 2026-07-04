@@ -140,7 +140,7 @@ const ViewService = () => {
 
                     <div
                         key={step.id}
-                        className="border rounded-lg p-4 mb-4"
+                        className="border  border-gray-200 shadow-sm rounded-lg p-4 mb-4"
                     >
 
                         <h3 className="text-lg font-bold">
@@ -173,7 +173,7 @@ const ViewService = () => {
 
                     <div
                         key={faq.id}
-                        className="border-b py-4"
+                        className="border-b  border-gray-200   py-4"
                     >
 
                         <h4 className="font-semibold">
