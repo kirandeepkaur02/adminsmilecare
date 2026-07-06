@@ -61,7 +61,7 @@ console.log(title);
          
 
           {/* Dark Mode */}
-          <button
+          {/* <button
             onClick={() => setDark(!dark)}
             className="grid h-10 w-10 place-items-center rounded-xl border border-gray-200 bg-card text-foreground hover:bg-muted transition"
           >
@@ -70,13 +70,13 @@ console.log(title);
             ) : (
               <Moon className="h-4 w-4" />
             )}
-          </button>
+          </button> */}
 
           {/* Notification */}
-          <button className="relative grid h-10 w-10 place-items-center rounded-xl border border-gray-200 bg-card text-foreground hover:bg-muted transition">
+          {/* <button className="relative grid h-10 w-10 place-items-center rounded-xl border border-gray-200 bg-card text-foreground hover:bg-muted transition">
             <Bell className="h-4 w-4" />
             <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500 ring-2 ring-card"></span>
-          </button>
+          </button> */}
 
           {/* Profile Dropdown */}
           <div className="relative">

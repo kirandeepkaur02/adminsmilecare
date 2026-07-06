@@ -12,11 +12,15 @@ import {
   X,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 
 const Doctors = () => {
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
   const [doctors, setDoctors] = useState([]);
 
   const emptyForm = {
@@ -35,7 +39,66 @@ const Doctors = () => {
 
   const [showEdit, setShowEdit] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const validate = () => {
+  let newErrors = {};
 
+  // Doctor Name
+  if (!formData.name.trim()) {
+    newErrors.name = "Doctor name is required";
+  }
+
+  // Specialization
+  if (!formData.specialization.trim()) {
+    newErrors.specialization = "Specialization is required";
+  }
+
+  // Qualification
+  if (!formData.qualification.trim()) {
+    newErrors.qualification = "Qualification is required";
+  }
+
+  // Experience
+  if (!formData.experience.trim()) {
+    newErrors.experience = "Experience is required";
+  } else if (isNaN(formData.experience)) {
+    newErrors.experience = "Experience must be a number";
+  }
+
+  // Phone
+  if (!formData.phone.trim()) {
+    newErrors.phone = "Phone number is required";
+  } else if (!/^[0-9]{10}$/.test(formData.phone)) {
+    newErrors.phone = "Phone number must be 10 digits";
+  }
+
+  // Email
+  if (!formData.email.trim()) {
+    newErrors.email = "Email is required";
+  } else if (
+    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
+  ) {
+    newErrors.email = "Invalid email address";
+  }
+
+  // Available Days
+  if (!formData.available_days.trim()) {
+    newErrors.available_days = "Available days are required";
+  }
+
+  // Consultation Time
+  if (!formData.consultation_time.trim()) {
+    newErrors.consultation_time = "Consultation time is required";
+  }
+
+  // Description
+  if (!formData.description.trim()) {
+    newErrors.description = "Description is required";
+  }
+
+  setErrors(newErrors);
+
+  return Object.keys(newErrors).length === 0;
+};
 
 
   const handleChange = (e) => {
@@ -46,6 +109,7 @@ const Doctors = () => {
   };
 
   const addDoctor = () => {
+     if (!validate()) return;
     fetch("http://localhost/adminsmilecare/doctors/adddoctors.php", {
       method: "POST",
       headers: {
@@ -55,7 +119,18 @@ const Doctors = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        alert(data.message);
+        // alert(data.message);
+          Swal.fire({
+            icon: data.status ? "success" : "error",
+    title: data.status ? "Success" : "Error",
+            text: data.message,
+            timer:2000,
+            showConfirmButton:false
+          })
+
+
+
+
 
         if (data.status) {
           setShowEdit(false);
@@ -79,7 +154,18 @@ const Doctors = () => {
   // Delete
   const deleteDoctor = (id) => {
 
-    if (!window.confirm("Delete this doctor?")) return;
+    const result =  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to recover this doctor!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete it!",
+  });
+
+  if (!result.isConfirmed) return;
+
 
     fetch("http://localhost/adminsmilecare/doctors/delete.php", {
       method: "POST",
@@ -90,21 +176,23 @@ const Doctors = () => {
     })
       .then(res => res.json())
       .then(data => {
-        alert(data.message);
+       if (data.status) {
+        toast.success(data.message);
         fetchDoctors();
-      });
-
-  };
-
-
-
+      } else {
+        toast.error(data.message);
+      }
+    
+   } )
+ } ;
 
   const editDoctor = (id) => {
+     if (!validate()) return;
     fetch("http://localhost/adminsmilecare/doctors/getdoctors.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-      },
+      }, 
       body: JSON.stringify({ id }),
     })
       .then((res) => res.json())
@@ -138,7 +226,13 @@ const Doctors = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        alert(data.message);
+        Swal.fire({
+    icon: data.status ? "success" : "error",
+    title: data.status ? "Updated!" : "Error",
+    text: data.message,
+    timer: 2000,
+    showConfirmButton: false,
+  });
 
         if (data.status) {
           setShowEdit(false);
@@ -305,6 +399,12 @@ const Doctors = () => {
                 placeholder="Doctor Name"
                 className="border border-gray-200 p-2 shadow-sm rounded"
               />
+                {errors.name && (
+  <p className="text-red-500 text-sm mt-1">
+    {errors.name}
+  </p>
+)}
+
 
               <input
                 type="text"
@@ -314,7 +414,11 @@ const Doctors = () => {
                 placeholder="Specialization"
                 className=" border border-gray-200 p-2 shadow-sm rounded"
               />
-
+{errors.specialization && (
+  <p className="text-red-500 text-sm mt-1">
+    {errors.specialization}
+  </p>
+)}
               <input
                 type="text"
                 name="qualification"
@@ -323,6 +427,11 @@ const Doctors = () => {
                 placeholder="Qualification"
                 className="border border-gray-200 p-2 shadow-sm rounded"
               />
+{errors.qualification && (
+  <p className="text-red-500 text-sm mt-1">
+    {errors.qualification}
+  </p>
+)}
 
               <input
                 type="text"
@@ -332,7 +441,11 @@ const Doctors = () => {
                 placeholder="Experience"
                 className="border border-gray-200 p-2 shadow-sm rounded"
               />
-
+{errors.experience && (
+  <p className="text-red-500 text-sm mt-1">
+    {errors.experience}
+  </p>
+)}
               <input
                 type="text"
                 name="phone"
@@ -341,7 +454,11 @@ const Doctors = () => {
                 placeholder="Phone"
                 className="border border-gray-200 p-2 shadow-sm rounded"
               />
-
+{errors.phone && (
+  <p className="text-red-500 text-sm mt-1">
+    {errors.phone}
+  </p>
+)}
               <input
                 type="email"
                 name="email"
@@ -350,7 +467,11 @@ const Doctors = () => {
                 placeholder="Email"
                 className="border border-gray-200 p-2  shadow-sm rounded"
               />
-
+{errors.email && (
+  <p className="text-red-500 text-sm mt-1">
+    {errors.email}
+  </p>
+)}
               <input
                 type="text"
                 name="available_days"
@@ -359,7 +480,11 @@ const Doctors = () => {
                 placeholder="Available Days"
                 className="border border-gray-200 p-2  shadow-sm rounded"
               />
-
+{errors.available_days && (
+  <p className="text-red-500 text-sm mt-1">
+    {errors.available_days}
+  </p>
+)}
               <input
                 type="text"
                 name="consultation_time"
@@ -368,7 +493,11 @@ const Doctors = () => {
                 placeholder="Consultation Time"
                 className="border border-gray-200  shadow-sm  p-2 rounded"
               />
-
+{errors.consultation_time && (
+  <p className="text-red-500 text-sm mt-1">
+    {errors.consultation_time}
+  </p>
+)}
             </div>
 
             <textarea
@@ -379,7 +508,11 @@ const Doctors = () => {
               className="border border-gray-200  shadow-sm  p-2 rounded w-full mt-4"
               rows={4}
             ></textarea>
-
+{errors.description && (
+  <p className="text-red-500 text-sm mt-1">
+    {errors.description}
+  </p>
+)}
             <div className="flex justify-end gap-3 mt-5">
 
               <button

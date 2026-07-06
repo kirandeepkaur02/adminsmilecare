@@ -37,7 +37,9 @@ function App() {
       <Route path="/addService" element={<AddService />} />
        <Route path="/doctors/view/:id" element={<ViewDoctor />} />
      </Route>
+     
      </Routes>
+     
 )
 }
 

@@ -4,17 +4,18 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from 'react';
 import { Pencil, Trash2 } from "lucide-react";
-
+import Swal from "sweetalert2"
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Staff = () => {
 
   const [showForm, setShowForm] = useState(false);
   const [editingStaff, setEditingStaff] = useState(null);
-
+  const [errors, setErrors] = useState({});
   const [items, setItems] = useState([
     {
       id: "",
-      photo: "",
       name: "",
       position: "",
       phone: "",
@@ -23,8 +24,37 @@ const Staff = () => {
     },
   ]);
 
+  const validate = () => {
+    let newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!formData.position.trim()) {
+      newErrors.position = "Position is required";
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone is required";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    }
+
+    if (!formData.joining_date) {
+      newErrors.joining_date = "Joining date is required";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+
   const initialStaff = {
-    photo: "",
+    // photo: "",
     name: "",
     position: "",
     phone: "",
@@ -40,47 +70,72 @@ const Staff = () => {
     setShowForm(true);
   };
 
-const openEdit = (staff) => {
-  setEditingStaff(staff);
-  setFormData(staff);
-  setShowForm(true);
-};
+  const openEdit = (staff) => {
+    setEditingStaff(staff);
+    setFormData(staff);
+    setShowForm(true);
+  };
 
-// const remove = (id) => {
-//   console.log("Delete staff:", id);
-// };
+  // const remove = (id) => {
+  //   console.log("Delete staff:", id);
+  // };
 
-const remove = async (id) => {
+  const remove = async (id) => {
+    const confirmDelete = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to recover this staff!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    });
 
-  const confirmDelete = window.confirm("Are you sure you want to delete this staff?");
+    if (!confirmDelete.isConfirmed) return;
 
-  if (!confirmDelete) return;
+    // if (!confirmDelete) return;
 
-  try {
+    try {
 
-    const response = await fetch(
-      "http://localhost/adminsmilecare/staffs/deletestaff.php",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
+      const response = await fetch(
+        "http://localhost/adminsmilecare/staffs/deletestaff.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id }),
+        }
+      );
+
+      const result = await response.json();
+
+      // alert(result.message);
+
+      if (result.success) {
+
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: result.message,
+          timer: 1800,
+          showConfirmButton: false,
+        });
+
+
+        loadStaff();
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: result.message,
+        });
       }
-    );
 
-    const result = await response.json();
-
-    alert(result.message);
-
-    if (result.success) {
-      loadStaff();
+    } catch (error) {
+      console.log(error);
     }
-
-  } catch (error) {
-    console.log(error);
-  }
-};
+  };
 
 
 
@@ -91,49 +146,57 @@ const remove = async (id) => {
     });
   };
 
-const handleSave = async () => {
+  const handleSave = async () => {
 
-  const api = editingStaff
-    ? "http://localhost/adminsmilecare/staffs/editstaff.php"
-    : "http://localhost/adminsmilecare/staffs/addstaff.php";
+    if (!validate()) return;
 
-  try {
+    const api = editingStaff
+      ? "http://localhost/adminsmilecare/staffs/editstaff.php"
+      : "http://localhost/adminsmilecare/staffs/addstaff.php";
 
-    const response = await fetch(api, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    try {
 
-    const result = await response.json();
+      const response = await fetch(api, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    alert(result.message);
+      const result = await response.json();
 
-    if (result.success) {
-      setShowForm(false);
-      setFormData(initialStaff);
-      setEditingStaff(null);
+      // alert(result.message);
 
-      loadStaff(); // Reload table
-    }
 
-  } catch (error) {
-    console.log(error);
-  }
 
-};
 
-const loadStaff = () => {
-  fetch("http://localhost/adminsmilecare/staffs/getstaff.php")
-    .then((res) => res.json())
-    .then((data) => setItems(data));
-};
 
-useEffect(() => {
-  loadStaff();
-}, []);
+     if (result.success) {
+      toast.success(result.message);
+        setShowForm(false);
+        setFormData(initialStaff);
+        setEditingStaff(null);
+
+        loadStaff(); // Reload table
+      } else {
+       toast.error(result.message);
+      }
+
+    } catch (error) {
+     toast.error(error.message);
+
+  }};
+
+  const loadStaff = () => {
+    fetch("http://localhost/adminsmilecare/staffs/getstaff.php")
+      .then((res) => res.json())
+      .then((data) => setItems(data));
+  };
+
+  useEffect(() => {
+    loadStaff();
+  }, []);
 
   useEffect(() => {
     fetch("http://localhost/adminsmilecare/staffs/getstaff.php")
@@ -211,7 +274,7 @@ useEffect(() => {
             {/* Body */}
             <div className="grid gap-4 p-6 sm:grid-cols-2">
 
-              <div className="sm:col-span-2">
+              {/* <div className="sm:col-span-2">
                 <label className="mb-1 block text-sm font-medium">
                   Photo URL
                 </label>
@@ -222,7 +285,7 @@ useEffect(() => {
                   onChange={handleChange}
                   className="w-full rounded-lg border border-gray-200  shadow-sm px-3 py-2 outline-none focus:border-blue-500"
                 />
-              </div>
+              </div> */}
 
               <div>
                 <label className="mb-1 block text-sm font-medium">
@@ -235,6 +298,11 @@ useEffect(() => {
                   onChange={handleChange}
                   className="w-full rounded-lg  shadow-sm border  border-gray-200 px-3 py-2 outline-none focus:border-blue-500"
                 />
+                {errors.name && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.name}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -248,6 +316,11 @@ useEffect(() => {
                   onChange={handleChange}
                   className="w-full rounded-lg border  shadow-sm border-gray-200 px-3 py-2 outline-none focus:border-blue-500"
                 />
+                {errors.position && (
+<p className="text-red-500 text-sm mt-1">
+  {errors.position}
+</p>
+)}
               </div>
 
               <div>
@@ -261,6 +334,11 @@ useEffect(() => {
                   onChange={handleChange}
                   className="w-full rounded-lg border  shadow-sm  border-gray-200 px-3 py-2 outline-none focus:border-blue-500"
                 />
+                {errors.phone && (
+<p className="text-red-500 text-sm mt-1">
+  {errors.phone}
+</p>
+)}
               </div>
 
               <div>
@@ -274,6 +352,11 @@ useEffect(() => {
                   onChange={handleChange}
                   className="w-full rounded-lg border  shadow-sm border-gray-200 px-3 py-2 outline-none focus:border-blue-500"
                 />
+                {errors.email && (
+<p className="text-red-500 text-sm mt-1">
+  {errors.email}
+</p>
+)}
               </div>
 
               <div className="sm:col-span-2">
@@ -287,6 +370,11 @@ useEffect(() => {
                   onChange={handleChange}
                   className="w-full rounded-lg border shadow-sm  border-gray-200 px-3 py-2 outline-none focus:border-blue-500"
                 />
+                {errors.joining_date && (
+<p className="text-red-500 text-sm mt-1">
+  {errors.joining_date}
+</p>
+)}
               </div>
 
             </div>
@@ -317,13 +405,13 @@ useEffect(() => {
           <table className="w-full text-sm">
             <thead className="bg-muted/50">
               <tr className="text-left text-xs uppercase tracking-wider text-gray-500">
-                   <th className="px-5 py-3 font-medium text-right">Actions</th>
+                <th className="px-5 py-3 font-medium text-right">Actions</th>
                 <th className="px-5 py-3 font-medium">Name</th>
                 <th className="px-5 py-3 font-medium">Position</th>
                 <th className="px-5 py-3 font-medium">Phone</th>
                 <th className="px-5 py-3 font-medium">Email</th>
                 <th className="px-5 py-3 font-medium">Joined</th>
-             
+
               </tr>
             </thead>
 
@@ -349,14 +437,14 @@ useEffect(() => {
                         </button>
                       </div>
                     </td>
-                    
+
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
-                        <img
+                        {/* <img
                            src={staff.photo || null}
     alt={staff.name}
                           className="h-5 w-5 rounded-lg object-cover"
-                        />
+                        /> */}
                         <span className="font-medium">{staff.name}</span>
                       </div>
                     </td>
@@ -369,7 +457,7 @@ useEffect(() => {
 
                     <td className="px-5 py-3">{staff.joining_date}</td>
 
-                   
+
                   </tr>
                 ))
               ) : (
@@ -384,7 +472,10 @@ useEffect(() => {
         </div>
       </div>
 
-
+ <ToastContainer
+    position="top-right"
+    autoClose={2000}
+  />
 
     </div>
   )

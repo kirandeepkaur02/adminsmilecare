@@ -4,13 +4,18 @@ import {
 } from "lucide-react";
 
 import { Pencil, Trash2 } from "lucide-react";
+import Swal from "sweetalert2";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const Patients = () => {
 
-const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
   const [patients, setPatients] = useState([]);
   const [showForm, setShowForm] = useState(false);
+    const [errors, setErrors] = useState({});
   const emptyPatient = {
     id: "",
     name: "",
@@ -45,22 +50,56 @@ const [isEdit, setIsEdit] = useState(false);
       });
   }, []);
 
+const validateForm = () => {
+  let newErrors = {};
 
+  // Name
+  if (!formData.name.trim()) {
+    newErrors.name = "Name is required";
+  }
+
+  // Phone
+  if (!formData.contacts.trim()) {
+    newErrors.contacts = "Phone number is required";
+  } else if (!/^[0-9]{10}$/.test(formData.contacts)) {
+    newErrors.contacts = "Phone number must be 10 digits";
+  }
+
+  // Age
+  if (!formData.age) {
+    newErrors.age = "Age is required";
+  } else if (formData.age <= 0) {
+    newErrors.age = "Enter a valid age";
+  }
+
+  // Email
+  if (!formData.email.trim()) {
+    newErrors.email = "Email is required";
+  } else if (
+    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
+  ) {
+    newErrors.email = "Invalid email address";
+  }
+
+  // Address
+  if (!formData.address.trim()) {
+    newErrors.address = "Address is required";
+  }
+
+  setErrors(newErrors);
+
+  return Object.keys(newErrors).length === 0;
+};
 
 
 
   const handleSave = async () => {
-    if (
-      formData.name.trim() === "" ||
-      formData.contacts.trim() === "" ||
-      formData.age === "" ||
-      formData.email.trim() === "" ||
-      formData.address.trim() === ""
-    ) {
-      alert("Please fill all required fields.");
-      return;
-    }
-    console.log("Save clicked");
+   if (!validateForm()) {
+    toast.error("Please fix the errors before submitting.");
+    return;
+  }
+
+  
 
     try {
       const response = await fetch(
@@ -77,11 +116,17 @@ const [isEdit, setIsEdit] = useState(false);
       const result = await response.json();
 
       if (result.status) {
-        alert("Patient Added Successfully");
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Patient added successfully.",
+          timer: 1800,
+          showConfirmButton: false,
+        });
 
-setIsEdit(false);          // <-- Add here
-  setShowForm(false);
-  setFormData(emptyPatient);
+        setIsEdit(false);          // <-- Add here
+        setShowForm(false);
+        setFormData(emptyPatient);
 
         // Reload patient list
         const res = await fetch(
@@ -90,19 +135,35 @@ setIsEdit(false);          // <-- Add here
         const data = await res.json();
         setPatients(data);
       } else {
-        alert(result.message);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: result.message,
+        });
       }
     } catch (error) {
       console.log(error);
-      alert("Something went wrong.");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong.",
+      });
     }
   };
 
 
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this patient?");
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to recover this patient!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#dc2626",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, Delete",
+    });
 
-    if (!confirmDelete) return;
+    if (!result.isConfirmed) return;
 
     try {
       const response = await fetch(
@@ -116,25 +177,42 @@ setIsEdit(false);          // <-- Add here
         }
       );
 
-      const result = await response.json();
+      const data = await response.json();
 
-      if (result.status) {
-        alert("Patient Deleted Successfully");
+      if (data.status) {
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "Patient deleted successfully.",
+          timer: 1800,
+          showConfirmButton: false,
+        });
 
-        // Remove deleted patient from UI
-        setPatients((prevPatients) =>
-          prevPatients.filter((patient) => patient.id !== id)
+        setPatients((prev) =>
+          prev.filter((patient) => patient.id !== id)
         );
       } else {
-        alert(result.message);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: data.message,
+        });
       }
     } catch (error) {
-      console.log(error);
-      alert("Something went wrong.");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong.",
+      });
     }
   };
 
   const handleUpdate = async () => {
+    if (!validateForm()) {
+    toast.error("Please fix the errors before submitting.");
+    return;
+  }
+
     try {
       const response = await fetch(
         "http://localhost/adminsmilecare/patients/editPatient.php",
@@ -150,7 +228,13 @@ setIsEdit(false);          // <-- Add here
       const result = await response.json();
 
       if (result.status) {
-        alert("Patient Updated Successfully");
+        Swal.fire({
+          icon: "success",
+          title: "Updated!",
+          text: "Patient updated successfully.",
+          timer: 1800,
+          showConfirmButton: false,
+        });
 
         // Update UI
         setPatients((prevPatients) =>
@@ -159,12 +243,16 @@ setIsEdit(false);          // <-- Add here
           )
         );
 
-       
-  setIsEdit(false);        // <-- Add here
-  setShowForm(false);
-  setFormData(emptyPatient);
+
+        setIsEdit(false);        // <-- Add here
+        setShowForm(false);
+        setFormData(emptyPatient);
       } else {
-        alert(result.message);
+       Swal.fire({
+  icon: "error",
+  title: "Error",
+  text: result.message,
+});
       }
     } catch (error) {
       console.log(error);
@@ -192,10 +280,10 @@ setIsEdit(false);          // <-- Add here
 
         <button
           onClick={() => {
-    setFormData(emptyPatient);
-    setIsEdit(false);
-    setShowForm(true);
-  }}
+            setFormData(emptyPatient);
+            setIsEdit(false);
+            setShowForm(true);
+          }}
           className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
         >
           <Plus size={18} />
@@ -334,7 +422,7 @@ setIsEdit(false);          // <-- Add here
 
               <button
                 type="button"
-               onClick={isEdit ? handleUpdate : handleSave}
+                onClick={isEdit ? handleUpdate : handleSave}
                 className="rounded-lg shadow-sm bg-blue-400 px-5 py-2 text-white "
               >
                 Save
@@ -380,7 +468,7 @@ setIsEdit(false);          // <-- Add here
                 <th className="px-5 py-3">Age</th>
                 <th className="px-5 py-3">Gender</th>
                 <th className="px-5 py-3">Address</th>
-                
+
               </tr>
             </thead>
 
@@ -391,14 +479,14 @@ setIsEdit(false);          // <-- Add here
                     key={patient.id}
                     className="  hover:bg-gray-100"
                   >
- <td className="px-5 py-4">
+                    <td className="px-5 py-4">
                       <div className="flex justify-end gap-2">
                         <button
                           onClick={() => {
-    setFormData(patient);
-    setIsEdit(true);
-    setShowForm(true);
-  }}
+                            setFormData(patient);
+                            setIsEdit(true);
+                            setShowForm(true);
+                          }}
                           className="rounded border border-gray-200 shadow-sm   p-2 hover:bg-gray-100"
                         >
                           <Pencil size={16} />
@@ -442,7 +530,7 @@ setIsEdit(false);          // <-- Add here
 
                     <td className="px-5 py-4 text-gray-500">{patient.address}</td>
 
-                   
+
                   </tr>
                 ))
               ) : (
