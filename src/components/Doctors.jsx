@@ -209,11 +209,12 @@ const Doctors = () => {
             <thead className="bg-gray-100">
 
               <tr className="text-left uppercase text-xs text-gray-500">
-
+               
+                <th className="px-5 py-3">Action</th>
                 <th className="px-5 py-3">Doctor ID</th>
                 <th className="px-5 py-3">Doctor Name</th>
                 <th className="px-5 py-3">Specialization</th>
-                <th className="px-5 py-3">Action</th>
+               
 
               </tr>
 
@@ -222,18 +223,13 @@ const Doctors = () => {
             <tbody className="divide-y divide-gray-200">
 
               {doctors.map((doctor) => (
+               
+
 
                 <tr key={doctor.id}
                   className="  hover:bg-gray-100"
                 >
-
-                  <td className="p-2">{doctor.id}</td>
-
-                  <td className="p-2">{doctor.name}</td>
-
-                  <td className="p-2">{doctor.specialization}</td>
-
-                  <td className="p-2">
+                <td className="p-2">
                     <div className="flex gap-2">
 
                       {/* View */}
@@ -268,6 +264,13 @@ const Doctors = () => {
 
                     </div>
                   </td>
+                  <td className="p-2">{doctor.id}</td>
+
+                  <td className="p-2">{doctor.name}</td>
+
+                  <td className="p-2">{doctor.specialization}</td>
+
+                  
 
                 </tr>
 
@@ -282,7 +285,7 @@ const Doctors = () => {
 
       {showEdit && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg w-175 p-6">
+          <div className="bg-white rounded-lg shadow-sm   p-6">
 
             <div className="flex justify-between items-center mb-5">
               <h2 className="text-xl font-bold"> {isEdit ? "Edit Doctor" : "Add Doctor"}</h2>
@@ -300,7 +303,7 @@ const Doctors = () => {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Doctor Name"
-                className="border p-2 rounded"
+                className="border border-gray-200 p-2 shadow-sm rounded"
               />
 
               <input
@@ -309,7 +312,7 @@ const Doctors = () => {
                 value={formData.specialization}
                 onChange={handleChange}
                 placeholder="Specialization"
-                className="border p-2 rounded"
+                className=" border border-gray-200 p-2 shadow-sm rounded"
               />
 
               <input
@@ -318,7 +321,7 @@ const Doctors = () => {
                 value={formData.qualification}
                 onChange={handleChange}
                 placeholder="Qualification"
-                className="border p-2 rounded"
+                className="border border-gray-200 p-2 shadow-sm rounded"
               />
 
               <input
@@ -327,7 +330,7 @@ const Doctors = () => {
                 value={formData.experience}
                 onChange={handleChange}
                 placeholder="Experience"
-                className="border p-2 rounded"
+                className="border border-gray-200 p-2 shadow-sm rounded"
               />
 
               <input
@@ -336,7 +339,7 @@ const Doctors = () => {
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="Phone"
-                className="border p-2 rounded"
+                className="border border-gray-200 p-2 shadow-sm rounded"
               />
 
               <input
@@ -345,7 +348,7 @@ const Doctors = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="Email"
-                className="border p-2 rounded"
+                className="border border-gray-200 p-2  shadow-sm rounded"
               />
 
               <input
@@ -354,7 +357,7 @@ const Doctors = () => {
                 value={formData.available_days}
                 onChange={handleChange}
                 placeholder="Available Days"
-                className="border p-2 rounded"
+                className="border border-gray-200 p-2  shadow-sm rounded"
               />
 
               <input
@@ -363,7 +366,7 @@ const Doctors = () => {
                 value={formData.consultation_time}
                 onChange={handleChange}
                 placeholder="Consultation Time"
-                className="border p-2 rounded"
+                className="border border-gray-200  shadow-sm  p-2 rounded"
               />
 
             </div>
@@ -373,7 +376,7 @@ const Doctors = () => {
               value={formData.description}
               onChange={handleChange}
               placeholder="Description"
-              className="border p-2 rounded w-full mt-4"
+              className="border border-gray-200  shadow-sm  p-2 rounded w-full mt-4"
               rows={4}
             ></textarea>
 

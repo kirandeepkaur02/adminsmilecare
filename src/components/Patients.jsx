@@ -137,7 +137,7 @@ setIsEdit(false);          // <-- Add here
   const handleUpdate = async () => {
     try {
       const response = await fetch(
-        "http://localhost/adminsmilecare/patients/updatePatient.php",
+        "http://localhost/adminsmilecare/patients/editPatient.php",
         {
           method: "POST",
           headers: {
@@ -373,12 +373,14 @@ setIsEdit(false);          // <-- Add here
           <table className="w-full text-sm">
             <thead className="bg-gray-100">
               <tr className="text-left uppercase text-xs text-gray-500">
+
+                <th className="px-5 py-3 text-right">Actions</th>
                 <th className="px-5 py-3">Patient</th>
                 <th className="px-5 py-3">Contact</th>
                 <th className="px-5 py-3">Age</th>
                 <th className="px-5 py-3">Gender</th>
                 <th className="px-5 py-3">Address</th>
-                <th className="px-5 py-3 text-right">Actions</th>
+                
               </tr>
             </thead>
 
@@ -389,6 +391,28 @@ setIsEdit(false);          // <-- Add here
                     key={patient.id}
                     className="  hover:bg-gray-100"
                   >
+ <td className="px-5 py-4">
+                      <div className="flex justify-end gap-2">
+                        <button
+                          onClick={() => {
+    setFormData(patient);
+    setIsEdit(true);
+    setShowForm(true);
+  }}
+                          className="rounded border border-gray-200 shadow-sm   p-2 hover:bg-gray-100"
+                        >
+                          <Pencil size={16} />
+                        </button>
+
+                        <button
+                          onClick={() => handleDelete(patient.id)}
+                          className="rounded border  border-gray-200 p-2 text-red-600 hover:bg-red-50"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
+
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 font-semibold text-blue-600">
@@ -418,27 +442,7 @@ setIsEdit(false);          // <-- Add here
 
                     <td className="px-5 py-4 text-gray-500">{patient.address}</td>
 
-                    <td className="px-5 py-4">
-                      <div className="flex justify-end gap-2">
-                        <button
-                          onClick={() => {
-    setFormData(patient);
-    setIsEdit(true);
-    setShowForm(true);
-  }}
-                          className="rounded border border-gray-200 shadow-sm   p-2 hover:bg-gray-100"
-                        >
-                          <Pencil size={16} />
-                        </button>
-
-                        <button
-                          onClick={() => handleDelete(patient.id)}
-                          className="rounded border  border-gray-200 p-2 text-red-600 hover:bg-red-50"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                    </td>
+                   
                   </tr>
                 ))
               ) : (

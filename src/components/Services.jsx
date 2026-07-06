@@ -128,15 +128,18 @@ const Services = () => {
 
             <tr>
 
+              <th className="p-4 text-center">
+                Actions
+              </th>
+
+
               <th className="p-4 text-left">ID</th>
 
               <th className="p-4 text-left">
                 Service Name
               </th>
 
-              <th className="p-4 text-center">
-                Actions
-              </th>
+             
 
             </tr>
 
@@ -179,15 +182,7 @@ const Services = () => {
                   className=" hover:bg-gray-100"
                 >
 
-                  <td className="p-4">
-                    {service.id}
-                  </td>
-
-                  <td className="p-4 font-normal">
-                    {service.name}
-                  </td>
-
-                  <td className="p-4">
+                    <td className="">
 
                     <div className="flex justify-center gap-4">
 
@@ -227,6 +222,18 @@ const Services = () => {
 
                   </td>
 
+
+
+
+                  <td className="p-4">
+                    {service.id}
+                  </td>
+
+                  <td className="p-4 font-normal">
+                    {service.name}
+                  </td>
+
+                 
                 </tr>
 
               ))

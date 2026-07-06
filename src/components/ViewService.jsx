@@ -51,8 +51,11 @@ const ViewService = () => {
                 <ArrowLeft size={18} />
                 Back
             </button>
+               
 
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="grid grid-cols-12 gap-4">
+                  {/* Services Description */}
+            <div className="bg-white  col-span-6 rounded-xl shadow p-6">
 
                 <h1 className="text-3xl font-bold mb-6">
                     {service.name}
@@ -104,11 +107,10 @@ const ViewService = () => {
 
                 </div>
 
-            </div>
+             </div>
 
             {/* Benefits */}
-
-            <div className="bg-white rounded-xl shadow p-6 mt-8">
+            <div className="bg-white   col-span-6 rounded-xl shadow p-6 ">
 
                 <h2 className="text-2xl font-bold mb-4">
                     Benefits
@@ -128,9 +130,12 @@ const ViewService = () => {
 
             </div>
 
-            {/* Steps */}
+               </div>
+            
+             <div className="grid grid-cols-12 gap-4 mt-8">
+                            {/* Steps */}
 
-            <div className="bg-white rounded-xl shadow p-6 mt-8">
+            <div className="bg-white  col-span-6 rounded-xl shadow p-6 ">
 
                 <h2 className="text-2xl font-bold mb-4">
                     Treatment Steps
@@ -163,7 +168,7 @@ const ViewService = () => {
 
             {/* FAQs */}
 
-            <div className="bg-white rounded-xl shadow p-6 mt-8">
+            <div className="bg-white col-span-6 rounded-xl shadow p-6 ">
 
                 <h2 className="text-2xl font-bold mb-4">
                     FAQs
@@ -189,6 +194,11 @@ const ViewService = () => {
                 ))}
 
             </div>
+             </div>
+
+
+
+
 
         </div>
     );

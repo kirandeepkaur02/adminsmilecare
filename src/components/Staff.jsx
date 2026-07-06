@@ -317,12 +317,13 @@ useEffect(() => {
           <table className="w-full text-sm">
             <thead className="bg-muted/50">
               <tr className="text-left text-xs uppercase tracking-wider text-gray-500">
-                <th className="px-5 py-3 font-medium">Member</th>
+                   <th className="px-5 py-3 font-medium text-right">Actions</th>
+                <th className="px-5 py-3 font-medium">Name</th>
                 <th className="px-5 py-3 font-medium">Position</th>
                 <th className="px-5 py-3 font-medium">Phone</th>
                 <th className="px-5 py-3 font-medium">Email</th>
                 <th className="px-5 py-3 font-medium">Joined</th>
-                <th className="px-5 py-3 font-medium text-right">Actions</th>
+             
               </tr>
             </thead>
 
@@ -330,6 +331,25 @@ useEffect(() => {
               {items.length > 0 ? (
                 items.map((staff) => (
                   <tr key={staff.id} className="hover:bg-muted/30 transition">
+
+                    <td className="px-5 py-3">
+                      <div className="flex justify-end gap-2">
+                        <button
+                          onClick={() => openEdit(staff)}
+                          className="p-2 border border-gray-200  shadow-sm  rounded hover:bg-gray-100"
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </button>
+
+                        <button
+                          onClick={() => remove(staff.id)}
+                          className="p-2 rounded bg-red-500 text-white hover:bg-red-600"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </td>
+                    
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
                         <img
@@ -349,23 +369,7 @@ useEffect(() => {
 
                     <td className="px-5 py-3">{staff.joining_date}</td>
 
-                    <td className="px-5 py-3">
-                      <div className="flex justify-end gap-2">
-                        <button
-                          onClick={() => openEdit(staff)}
-                          className="p-2 border border-gray-200  shadow-sm  rounded hover:bg-gray-100"
-                        >
-                          <Pencil className="h-4 w-4" />
-                        </button>
-
-                        <button
-                          onClick={() => remove(staff.id)}
-                          className="p-2 rounded bg-red-500 text-white hover:bg-red-600"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </td>
+                   
                   </tr>
                 ))
               ) : (

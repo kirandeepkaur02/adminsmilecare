@@ -268,7 +268,7 @@ const StatusBadgeAppointment = ({ status }) => {
             </div>
 
             {/* Right Side */}
-            <div className="flex flex-wrap gap-3">
+            {/* <div className="flex flex-wrap gap-3">
               <Link
                 to="/bookings"
                 className="inline-flex items-center gap-2 rounded-xl bg-white/20 px-5 py-3 text-sm font-medium backdrop-blur-md transition-all duration-300 hover:bg-white/30"
@@ -284,7 +284,7 @@ const StatusBadgeAppointment = ({ status }) => {
                 <UserPlus size={18} />
                 Add Patient
               </Link>
-            </div>
+            </div> */}
           </div>
         </motion.div>
       </div>

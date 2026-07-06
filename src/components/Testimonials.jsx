@@ -280,11 +280,12 @@ const handleDelete = async (id) => {
   <table className="w-full">
     <thead className="bg-gray-100 text-gray-400">
       <tr>
+         <th className="px-5 py-3 text-center">Actions</th>
         <th className="px-5 py-3 text-left">ID</th>
         <th className="px-5 py-3 text-left">Name</th>
         <th className="px-5 py-3 text-left">Review</th>
         <th className="px-5 py-3 text-center">Rating</th>
-        <th className="px-5 py-3 text-center">Actions</th>
+        
       </tr>
     </thead>
 
@@ -295,20 +296,6 @@ const handleDelete = async (id) => {
             key={item.id}
             className=" hover:bg-gray-50"
           >
-            <td className="px-5 py-4">{index + 1}</td>
-
-            <td className="px-5 py-4 font-medium">
-              {item.name}
-            </td>
-
-            <td className="px-5 py-4 max-w-md">
-              {item.text}
-            </td>
-
-            <td className="px-5 py-4 text-center">
-              {"⭐".repeat(Number(item.rating))}
-            </td>
-
             <td className="px-5 py-4">
               <div className="flex justify-center gap-2">
                 <button 
@@ -324,6 +311,22 @@ const handleDelete = async (id) => {
                 </button>
               </div>
             </td>
+
+            <td className="px-5 py-4">{index + 1}</td>
+
+            <td className="px-5 py-4 font-medium">
+              {item.name}
+            </td>
+
+            <td className="px-5 py-4 max-w-md">
+              {item.text}
+            </td>
+
+            <td className="px-5 py-4 text-center">
+              {"⭐".repeat(Number(item.rating))}
+            </td>
+
+          
           </tr>
         ))
       ) : (
