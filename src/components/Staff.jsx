@@ -54,7 +54,7 @@ const Staff = () => {
 
 
   const initialStaff = {
-    // photo: "",
+    
     name: "",
     position: "",
     phone: "",
@@ -80,64 +80,116 @@ const Staff = () => {
   //   console.log("Delete staff:", id);
   // };
 
-  const remove = async (id) => {
-    const confirmDelete = await Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to recover this staff!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!",
-    });
+  // const remove = async (id) => {
+  //   const confirmDelete = await Swal.fire({
+  //     title: "Are you sure?",
+  //     text: "You won't be able to recover this staff!",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#d33",
+  //     cancelButtonColor: "#3085d6",
+  //     confirmButtonText: "Yes, delete it!",
+  //   });
 
-    if (!confirmDelete.isConfirmed) return;
+  //   if (!confirmDelete.isConfirmed) return;
 
-    // if (!confirmDelete) return;
+  //   // if (!confirmDelete) return;
 
-    try {
+  //   try {
 
-      const response = await fetch(
-        "http://localhost/adminsmilecare/staffs/deletestaff.php",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id }),
-        }
-      );
+  //     const response = await fetch(
+  //       "http://localhost/adminsmilecare/staffs/deletestaff.php",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ id }),
+  //       }
+  //     );
 
-      const result = await response.json();
+  //     const result = await response.json();
 
-      // alert(result.message);
+  //     // alert(result.message);
 
-      if (result.success) {
+  //     if (result.success) {
 
-        Swal.fire({
-          icon: "success",
-          title: "Deleted!",
-          text: result.message,
-          timer: 1800,
-          showConfirmButton: false,
-        });
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Deleted!",
+  //         text: result.message,
+  //         timer: 1800,
+  //         showConfirmButton: false,
+  //       });
 
 
-        loadStaff();
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: result.message,
-        });
+  //       loadStaff();
+  //     } else {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Error",
+  //         text: result.message,
+  //       });
+  //     }
+
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+const remove = async (id) => {
+  // First confirmation
+  const firstConfirm = await Swal.fire({
+    title: "Delete Staff?",
+    text: "Do you want to delete this staff record?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Yes",
+    cancelButtonText: "No",
+  });
+
+  if (!firstConfirm.isConfirmed) return;
+
+  // Second confirmation
+  const secondConfirm = await Swal.fire({
+    title: "Final Confirmation",
+    text: "This action cannot be undone. Are you sure you want to permanently delete this staff?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Delete Permanently",
+    cancelButtonText: "Cancel",
+  });
+
+  if (!secondConfirm.isConfirmed) return;
+
+  try {
+    const response = await fetch(
+      "http://localhost/adminsmilecare/staffs/deletestaff.php",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
       }
+    );
 
-    } catch (error) {
-      console.log(error);
+    const result = await response.json();
+
+    if (result.success) {
+  toast.success(result.message);
+
+
+      loadStaff();
+    } else {
+       toast.error(result.message);
     }
-  };
-
-
+  } catch (error) {
+   toast.error("Something went wrong!");
+  }
+};
 
   const handleChange = (e) => {
     setFormData({
@@ -204,7 +256,12 @@ const Staff = () => {
       .then((data) => setItems(data));
   }, []);
 
+
+
+
   return (
+
+
     <div className="p-6">
       {/* Header */}
 

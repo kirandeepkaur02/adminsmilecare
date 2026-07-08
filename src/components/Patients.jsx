@@ -98,10 +98,7 @@ const validateForm = () => {
     toast.error("Please fix the errors before submitting.");
     return;
   }
-
-  
-
-    try {
+     try {
       const response = await fetch(
         "http://localhost/adminsmilecare/patients/addPatient.php",
         {
@@ -115,14 +112,9 @@ const validateForm = () => {
 
       const result = await response.json();
 
-      if (result.status) {
-        Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Patient added successfully.",
-          timer: 1800,
-          showConfirmButton: false,
-        });
+      if (result.success) {
+        toast.success(result.message)
+        
 
         setIsEdit(false);          // <-- Add here
         setShowForm(false);
@@ -135,77 +127,140 @@ const validateForm = () => {
         const data = await res.json();
         setPatients(data);
       } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: result.message,
-        });
+        toast.error(result.message);
       }
     } catch (error) {
       console.log(error);
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Something went wrong.",
-      });
+       toast.error(result.message)
     }
   };
 
 
-  const handleDelete = async (id) => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to recover this patient!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#dc2626",
-      cancelButtonColor: "#6b7280",
-      confirmButtonText: "Yes, Delete",
-    });
+  // const handleDelete = async (id) => {
+  //   const result = await Swal.fire({
+  //     title: "Are you sure?",
+  //     text: "You won't be able to recover this patient!",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#dc2626",
+  //     cancelButtonColor: "#6b7280",
+  //     confirmButtonText: "Yes, Delete",
+  //   });
 
-    if (!result.isConfirmed) return;
+  //   if (!result.isConfirmed) return;
 
-    try {
-      const response = await fetch(
-        "http://localhost/adminsmilecare/patients/deletePatient.php",
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id }),
-        }
-      );
+  //   try {
+  //     const response = await fetch(
+  //       "http://localhost/adminsmilecare/patients/deletePatient.php",
+  //       {
+  //         method: "DELETE",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ id }),
+  //       }
+  //     );
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      if (data.status) {
-        Swal.fire({
-          icon: "success",
-          title: "Deleted!",
-          text: "Patient deleted successfully.",
-          timer: 1800,
-          showConfirmButton: false,
-        });
+  //     if (data.status) {
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Deleted!",
+  //         text: "Patient deleted successfully.",
+  //         timer: 1800,
+  //         showConfirmButton: false,
+  //       });
 
-        setPatients((prev) =>
-          prev.filter((patient) => patient.id !== id)
-        );
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: data.message,
-        });
+  //       setPatients((prev) =>
+  //         prev.filter((patient) => patient.id !== id)
+  //       );
+  //     } else {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Error",
+  //         text: data.message,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Oops...",
+  //       text: "Something went wrong.",
+  //     });
+  //   }
+  // };
+
+const handleDelete = async (id) => {
+  // First confirmation
+  const firstConfirm = await Swal.fire({
+    title: "Delete Patient?",
+    text: "Do you really want to delete this patient?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, Next",
+    cancelButtonText: "Cancel",
+    confirmButtonColor: "#2563eb",
+  });
+
+  if (!firstConfirm.isConfirmed) return;
+
+  // Second confirmation
+  const secondConfirm = await Swal.fire({
+    title: "Final Confirmation",
+    text: "This action cannot be undone. Are you absolutely sure?",
+    icon: "error",
+    showCancelButton: true,
+    confirmButtonText: "Yes, Delete",
+    cancelButtonText: "No",
+    confirmButtonColor: "#dc2626",
+  });
+
+  if (!secondConfirm.isConfirmed) return;
+
+  try {
+    const response = await fetch(
+      "http://localhost/adminsmilecare/patients/deletePatient.php",
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
       }
-    } catch (error) {
+    );
+
+    const data = await response.json();
+
+    if (data.status) {
+      Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        text: "Patient deleted successfully.",
+        timer: 1800,
+        showConfirmButton: false,
+      });
+
+      setPatients((prev) =>
+        prev.filter((patient) => patient.id !== id)
+      );
+    } else {
       Swal.fire({
         icon: "error",
-        title: "Oops...",
-        text: "Something went wrong.",
+        title: "Error",
+        text: data.message,
       });
     }
-  };
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Something went wrong.",
+    });
+  }
+};
+
+
 
   const handleUpdate = async () => {
     if (!validateForm()) {
@@ -227,14 +282,9 @@ const validateForm = () => {
 
       const result = await response.json();
 
-      if (result.status) {
-        Swal.fire({
-          icon: "success",
-          title: "Updated!",
-          text: "Patient updated successfully.",
-          timer: 1800,
-          showConfirmButton: false,
-        });
+      if (result.success) {
+          toast.success(result.message)
+        
 
         // Update UI
         setPatients((prevPatients) =>
@@ -248,15 +298,11 @@ const validateForm = () => {
         setShowForm(false);
         setFormData(emptyPatient);
       } else {
-       Swal.fire({
-  icon: "error",
-  title: "Error",
-  text: result.message,
-});
+         toast.error(result.message);
       }
     } catch (error) {
       console.log(error);
-      alert("Something went wrong.");
+    toast.error(error.message || "Something went wrong!");
     }
   };
 

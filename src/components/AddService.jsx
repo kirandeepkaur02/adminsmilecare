@@ -227,9 +227,10 @@ const AddService = () => {
         Back
       </button>
 
-      {/* Service Details */}
+      <div className="grid grid-cols-12 gap-4">
+            {/* Service Details */}
 
-      <div className="bg-white rounded-xl shadow-lg p-6">
+      <div className="bg-white col-span-6 rounded-xl shadow-lg p-6">
 
         <h2 className="text-3xl font-bold text-gray-800 mb-8">
           Add New Service
@@ -363,7 +364,7 @@ const AddService = () => {
 
       {/* ================= Benefits ================= */}
 
-      <div className="bg-white rounded-xl shadow-lg p-6 mt-8">
+      <div className="bg-white  col-span-6 rounded-xl shadow-lg p-6 ">
 
         <div className="flex justify-between items-center mb-6">
 
@@ -411,10 +412,13 @@ const AddService = () => {
         ))}
 
       </div>
+           </div>
 
+      
+    <div className="grid grid-cols-12 gap-4">
       {/* ================= Treatment Steps ================= */}
 
-      <div className="bg-white rounded-xl shadow-lg p-6 mt-8">
+      <div className="bg-white col-span-6 rounded-xl shadow-lg p-6 mt-8">
 
         <div className="flex justify-between items-center mb-6">
 
@@ -510,7 +514,7 @@ const AddService = () => {
 
       {/* ================= FAQs ================= */}
 
-      <div className="bg-white rounded-xl shadow-lg p-6 mt-8">
+      <div className="bg-white col-span-6 rounded-xl shadow-lg p-6 mt-8">
 
         <div className="flex justify-between items-center mb-6">
 
@@ -582,6 +586,8 @@ const AddService = () => {
         ))}
 
       </div>
+    </div>
+     
 
       {/* ================= Buttons ================= */}
 
@@ -609,5 +615,4 @@ const AddService = () => {
     </div>
   );
 };
-
 export default AddService;

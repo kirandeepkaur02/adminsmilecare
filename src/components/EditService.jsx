@@ -150,12 +150,6 @@ const EditService = () => {
       alert("Update Failed");
     }
   };
-
-
-
-
-
-  
   if (loading) {
     return (
       <div className="p-10 text-center text-xl">
@@ -175,323 +169,335 @@ const EditService = () => {
         Back
       </button>
 
-      <div className="bg-white rounded-xl shadow p-6">
+      <div className="grid grid-cols-12 gap-4">
 
-        <h2 className="text-3xl font-bold mb-6">
-          Edit Service
-        </h2>
+        {/* Edit Services */}
+        <div className="bg-white  col-span-6 rounded-xl shadow p-6">
 
-        <div className="grid grid-cols-2 gap-5">
+          <h2 className="text-3xl font-bold mb-6">
+            Edit Service
+          </h2>
 
-          <div>
-            <label className="font-semibold">
-              Service Name
-            </label>
+          <div className="grid grid-cols-2 gap-5">
 
-            <input
-              type="text"
-              name="name"
-              value={service.name}
-              onChange={handleServiceChange}
-              className="border border-gray-200 shadow-sm  rounded w-full p-2 mt-1"
-            />
-          </div>
+            <div>
+              <label className="font-semibold">
+                Service Name
+              </label>
 
-          <div>
-            <label className="font-semibold">
-              Pain Level
-            </label>
+              <input
+                type="text"
+                name="name"
+                value={service.name}
+                onChange={handleServiceChange}
+                className="border border-gray-200 shadow-sm  rounded w-full p-2 mt-1"
+              />
+            </div>
 
-            <select
-              name="pain_level"
-              value={service.pain_level}
-              onChange={handleServiceChange}
-              className="border  border-gray-200 shadow-sm rounded w-full p-2 mt-1"
-            >
-              <option>Very Low</option>
-              <option>Low</option>
-              <option>Medium</option>
-              <option>High</option>
-            </select>
-          </div>
+            <div>
+              <label className="font-semibold">
+                Pain Level
+              </label>
 
-          <div className="col-span-2">
+              <select
+                name="pain_level"
+                value={service.pain_level}
+                onChange={handleServiceChange}
+                className="border  border-gray-200 shadow-sm rounded w-full p-2 mt-1"
+              >
+                <option>Very Low</option>
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+              </select>
+            </div>
 
-            <label className="font-semibold">
-              Description
-            </label>
+            <div className="col-span-2">
 
-            <textarea
-              rows="5"
-              name="description"
-              value={service.description}
-              onChange={handleServiceChange}
-              className="border  border-gray-200 shadow-sm rounded w-full p-2 mt-1"
-            />
+              <label className="font-semibold">
+                Description
+              </label>
 
-          </div>
+              <textarea
+                rows="5"
+                name="description"
+                value={service.description}
+                onChange={handleServiceChange}
+                className="border  border-gray-200 shadow-sm rounded w-full p-2 mt-1"
+              />
 
-          <div>
-            <label className="font-semibold">
-              Recovery Time
-            </label>
+            </div>
 
-            <input
-              type="text"
-              name="recovery_time"
-              value={service.recovery_time}
-              onChange={handleServiceChange}
-              className="border   border-gray-200 shadow-sm rounded w-full p-2 mt-1"
-            />
-          </div>
+            <div>
+              <label className="font-semibold">
+                Recovery Time
+              </label>
 
-          <div>
-            <label className="font-semibold">
-              Duration
-            </label>
+              <input
+                type="text"
+                name="recovery_time"
+                value={service.recovery_time}
+                onChange={handleServiceChange}
+                className="border   border-gray-200 shadow-sm rounded w-full p-2 mt-1"
+              />
+            </div>
 
-            <input
-              type="text"
-              name="duration"
-              value={service.duration}
-              onChange={handleServiceChange}
-              className="border  border-gray-200 shadow-sm rounded w-full p-2 mt-1"
-            />
-          </div>
+            <div>
+              <label className="font-semibold">
+                Duration
+              </label>
 
-          <div>
-            <label className="font-semibold">
-              Price
-            </label>
+              <input
+                type="text"
+                name="duration"
+                value={service.duration}
+                onChange={handleServiceChange}
+                className="border  border-gray-200 shadow-sm rounded w-full p-2 mt-1"
+              />
+            </div>
 
-            <input
-              type="text"
-              name="price"
-              value={service.price}
-              onChange={handleServiceChange}
-              className="border   border-gray-200 shadow-sm rounded w-full p-2 mt-1"
-            />
+            <div>
+              <label className="font-semibold">
+                Price
+              </label>
+
+              <input
+                type="text"
+                name="price"
+                value={service.price}
+                onChange={handleServiceChange}
+                className="border   border-gray-200 shadow-sm rounded w-full p-2 mt-1"
+              />
+            </div>
+
           </div>
 
         </div>
 
-      </div>
+        {/* Benefits */}
 
-      {/* Benefits */}
+        <div className="bg-white  col-span-6 rounded-xl shadow p-6 ">
 
-<div className="bg-white rounded-xl shadow p-6 mt-8">
+          <div className="flex justify-between items-center mb-4">
 
-    <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold">
+              Benefits
+            </h2>
 
-        <h2 className="text-2xl font-bold">
-            Benefits
-        </h2>
+            <button
+              onClick={addBenefit}
+              className="bg-green-600 text-white px-4 py-2 rounded"
+            >
+              + Add Benefit
+            </button>
 
-        <button
-            onClick={addBenefit}
-            className="bg-green-600 text-white px-4 py-2 rounded"
-        >
-            + Add Benefit
-        </button>
+          </div>
 
-    </div>
+          {benefits.map((item, index) => (
 
-    {benefits.map((item, index) => (
+            <div
+              key={index}
+              className="flex gap-3 mb-3"
+            >
 
-        <div
-            key={index}
-            className="flex gap-3 mb-3"
-        >
-
-            <input
+              <input
                 type="text"
                 value={item.benefit}
                 onChange={(e) =>
-                    updateBenefit(index, e.target.value)
+                  updateBenefit(index, e.target.value)
                 }
                 className="border  border-gray-200 shadow-sm rounded p-2 flex-1"
-            />
+              />
 
-            <button
+              <button
                 onClick={() => removeBenefit(index)}
                 className="bg-red-500 text-white px-4 rounded"
-            >
+              >
                 Delete
-            </button>
+              </button>
+
+            </div>
+
+          ))}
 
         </div>
 
-    ))}
 
-</div>
+      </div>
 
-{/* Treatment Steps */}
 
-<div className="bg-white rounded-xl shadow p-6 mt-8">
+    <div className="grid grid-cols-12 gap-4">
+          {/* Treatment Steps */}
 
-    <div className="flex justify-between items-center mb-5">
+      <div className="bg-white rounded-xl col-span-6 shadow p-6 mt-8">
 
-        <h2 className="text-2xl font-bold">
+        <div className="flex justify-between items-center mb-5">
+
+          <h2 className="text-2xl font-bold">
             Treatment Steps
-        </h2>
+          </h2>
 
-        <button
+          <button
             onClick={addStep}
             className="bg-green-600 text-white px-4 py-2 rounded"
-        >
+          >
             + Add Step
-        </button>
+          </button>
 
-    </div>
+        </div>
 
-    {steps.map((step, index) => (
+        {steps.map((step, index) => (
 
-        <div
+          <div
             key={index}
             className="border   border-gray-200 shadow-sm rounded-lg p-5 mb-5"
-        >
+          >
 
             <div className="grid grid-cols-2 gap-4">
 
-                <div>
+              <div>
 
-                    <label>Step No</label>
+                <label>Step No</label>
 
-                    <input
-                        type="number"
-                        value={step.step_no}
-                        onChange={(e) =>
-                            updateStep(index, "step_no", e.target.value)
-                        }
-                        className="border  border-gray-200 shadow-sm rounded p-2 w-full"
-                    />
+                <input
+                  type="number"
+                  value={step.step_no}
+                  onChange={(e) =>
+                    updateStep(index, "step_no", e.target.value)
+                  }
+                  className="border  border-gray-200 shadow-sm rounded p-2 w-full"
+                />
 
-                </div>
+              </div>
 
-                <div>
+              <div>
 
-                    <label>Title</label>
+                <label>Title</label>
 
-                    <input
-                        type="text"
-                        value={step.title}
-                        onChange={(e) =>
-                            updateStep(index, "title", e.target.value)
-                        }
-                        className="border   border-gray-200 shadow-sm rounded p-2 w-full"
-                    />
+                <input
+                  type="text"
+                  value={step.title}
+                  onChange={(e) =>
+                    updateStep(index, "title", e.target.value)
+                  }
+                  className="border   border-gray-200 shadow-sm rounded p-2 w-full"
+                />
 
-                </div>
+              </div>
 
             </div>
 
             <div className="mt-4">
 
-                <label>Description</label>
+              <label>Description</label>
 
-                <textarea
-                    rows="4"
-                    value={step.description}
-                    onChange={(e) =>
-                        updateStep(index, "description", e.target.value)
-                    }
-                    className="border   border-gray-200 shadow-sm rounded p-2 w-full"
-                />
+              <textarea
+                rows="4"
+                value={step.description}
+                onChange={(e) =>
+                  updateStep(index, "description", e.target.value)
+                }
+                className="border   border-gray-200 shadow-sm rounded p-2 w-full"
+              />
 
             </div>
 
             <button
-                onClick={() => removeStep(index)}
-                className="mt-3 bg-red-500 text-white px-4 py-2 rounded"
+              onClick={() => removeStep(index)}
+              className="mt-3 bg-red-500 text-white px-4 py-2 rounded"
             >
-                Delete Step
+              Delete Step
             </button>
+
+          </div>
+
+        ))}
+
+      </div>
+
+      {/* FAQs */}
+
+      <div className="bg-white col-span-6  rounded-xl shadow p-6 mt-8">
+
+        <div className="flex justify-between items-center mb-5">
+
+          <h2 className="text-2xl font-bold">
+            FAQs
+          </h2>
+
+          <button
+            onClick={addFaq}
+            className="bg-green-600 text-white px-4 py-2 rounded"
+          >
+            + Add FAQ
+          </button>
 
         </div>
 
-    ))}
+        {faqs.map((faq, index) => (
 
-</div>
-
-{/* FAQs */}
-
-<div className="bg-white rounded-xl shadow p-6 mt-8">
-
-    <div className="flex justify-between items-center mb-5">
-
-        <h2 className="text-2xl font-bold">
-            FAQs
-        </h2>
-
-        <button
-            onClick={addFaq}
-            className="bg-green-600 text-white px-4 py-2 rounded"
-        >
-            + Add FAQ
-        </button>
-
-    </div>
-
-    {faqs.map((faq, index) => (
-
-        <div
+          <div
             key={index}
             className="border   border-gray-200 shadow-sm rounded-lg p-5 mb-5"
-        >
+          >
 
             <div>
 
-                <label>Question</label>
+              <label>Question</label>
 
-                <textarea
-                    rows="2"
-                    value={faq.question}
-                    onChange={(e) =>
-                        updateFaq(index, "question", e.target.value)
-                    }
-                    className="border  border-gray-200 shadow-sm  rounded p-2 w-full"
-                />
+              <textarea
+                rows="2"
+                value={faq.question}
+                onChange={(e) =>
+                  updateFaq(index, "question", e.target.value)
+                }
+                className="border  border-gray-200 shadow-sm  rounded p-2 w-full"
+              />
 
             </div>
 
             <div className="mt-4">
 
-                <label>Answer</label>
+              <label>Answer</label>
 
-                <textarea
-                    rows="4"
-                    value={faq.answer}
-                    onChange={(e) =>
-                        updateFaq(index, "answer", e.target.value)
-                    }
-                    className="border   border-gray-200 shadow-sm rounded p-2 w-full"
-                />
+              <textarea
+                rows="4"
+                value={faq.answer}
+                onChange={(e) =>
+                  updateFaq(index, "answer", e.target.value)
+                }
+                className="border   border-gray-200 shadow-sm rounded p-2 w-full"
+              />
 
             </div>
 
             <button
-                onClick={() => removeFaq(index)}
-                className="mt-3 bg-red-500 text-white px-4 py-2 rounded"
+              onClick={() => removeFaq(index)}
+              className="mt-3 bg-red-500 text-white px-4 py-2 rounded"
             >
-                Delete FAQ
+              Delete FAQ
             </button>
 
-        </div>
+          </div>
 
-    ))}
+        ))}
 
-</div>
+      </div>
+    </div>
 
-<div className="mt-8 flex justify-end">
+     
+ 
+          {/* Button For Saving data */}
+      <div className="mt-8 flex justify-end">
 
-    <button
-        onClick={saveService}
-        className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-lg"
-    >
-        Save Changes
-    </button>
+        <button
+          onClick={saveService}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-lg"
+        >
+          Save Changes
+        </button>
 
-</div>
+      </div>
 
     </div>
   );
